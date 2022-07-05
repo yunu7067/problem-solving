@@ -11,6 +11,7 @@ class Solution:
         p_nums = []
         n_nums = []
         zeros = []
+        nums.sort()
         for num in nums:
             if num > 0:
                 p_nums.append(num)
@@ -37,7 +38,7 @@ class Solution:
         for n_num in n_nums:
             if -n_num in p_2comb_dict:
                 for (a, b) in p_2comb_dict[-n_num]:
-                    sums.add(tuple(sorted((n_num, a, b))))
+                    sums.add((n_num, a, b))
         # 양1음2=0인 경우
         n_2comb_nums = combinations(n_nums, 2)
         n_2comb_dict = collections.defaultdict(list)
@@ -46,6 +47,6 @@ class Solution:
         for p_num in p_nums:
             if -p_num in n_2comb_dict:
                 for (a, b) in n_2comb_dict[-p_num]:
-                    sums.add(tuple(sorted((a, b, p_num))))
+                    sums.add((a, b, p_num))
         
         return list(sums)
