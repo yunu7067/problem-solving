@@ -1,22 +1,16 @@
-from collections import deque
 import sys
 
-
 X = int(sys.stdin.readline().rstrip())
-queue = deque([1])
-table = dict()
-table[1] = 0
+D = [sys.maxsize] * (X + 1)
+D[0], D[1] = 0, 0
 
-while queue:
-    num = queue.popleft()
-    if num == X:
-        break
+for i in range(2, X + 1):
+    counts = [D[i - 1] + 1]
+    if i % 3 == 0:
+        counts.append(D[i // 3] + 1)
+    if i % 2 == 0:
+        counts.append(D[i // 2] + 1)
+    D[i] = min(counts)
 
-    next_nums = [num * 3, num * 2, num + 1]
-    for next_num in next_nums:
-        if next_num > X or next_num in table.keys():
-            continue
-        table[next_num] = table[num] + 1
-        queue.append(next_num)
 
-print(table[X])
+print(D[X])
