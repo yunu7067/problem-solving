@@ -8,7 +8,7 @@ while K != 0:
     if K < C[-1]:
         C.pop()
         continue
-    K -= C[-1]
-    n += 1
+    d, K = divmod(K, C[-1])
+    n += d
 
 print(n)
