@@ -4,21 +4,15 @@ N, M = map(int, stdin.readline().split())
 A = [int(stdin.readline().rstrip()) for _ in range(N)]
 A.sort()
 
+start = 0
+end = 0
 diff = maxsize
-for i in range(N):
-    start = i
-    end = N - 1
-    while start < end:
-        mid = (start + end + 1) // 2
-        if A[mid] - A[i] > M:
-            end = mid - 1
-        elif A[mid] - A[i] < M:
-            start = mid
-        else:
-            print(M)
-            exit()
-
-    if A[mid] - A[i] > M:
-        diff = min(diff, A[mid] - A[i])
+while start < N and end < N:
+    cur_m = A[end] - A[start]
+    if cur_m >= M:
+        diff = min(cur_m, diff)
+        start += 1
+    else:
+        end += 1
 
 print(diff)
