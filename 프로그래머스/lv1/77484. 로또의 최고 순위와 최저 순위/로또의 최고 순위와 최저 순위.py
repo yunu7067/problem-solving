@@ -1,11 +1,5 @@
 def solution(lottos, win_nums):
-    match = 0
-    zero = 0
-    for num in lottos:
-        if num == 0:
-            zero += 1
-        elif num in win_nums:
-                match +=1
-    
-    answer = [(7- match - zero) if match+zero > 1 else 6, (7- match) if match > 1 else 6]
+    rank = "6654321"
+    match = sum([lottos.count(num) for num in win_nums])
+    answer = [int(rank[match + lottos.count(0)]), int(rank[match])]
     return answer
