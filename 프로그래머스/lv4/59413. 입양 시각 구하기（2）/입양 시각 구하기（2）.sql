@@ -1,16 +1,4 @@
--- 코드를 입력하세요
-WITH c AS (
-    SELECT HOUR(o.datetime) AS `HOUR`, COUNT(*) as `COUNT`
-    FROM animal_outs AS o
-    GROUP BY HOUR(o.datetime)
-    ORDER BY HOUR
-)
-
-
-
-SELECT h.hour AS `HOUR`, IFNULL(c.count,0) AS `COUNT`
-FROM (
-    SELECT 0 AS 'HOUR'
+SELECT 0 AS 'HOUR'
      UNION ALL SELECT 1
      UNION ALL SELECT 2
      UNION ALL SELECT 3
@@ -34,5 +22,3 @@ FROM (
      UNION ALL SELECT 21
      UNION ALL SELECT 22
      UNION ALL SELECT 23
-    ) as h
-    LEFT JOIN c ON (h.hour = c.hour)
