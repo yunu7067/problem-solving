@@ -11,20 +11,19 @@ for _ in range(int(input())):
         print(0)
         continue
 
-    visited = [[False] * L for _ in range(L)]
-    visited[src[0]][src[1]] = True
-    Q = deque([(*src, 0)])
+    visited = [[-1] * L for _ in range(L)]
+    visited[src[0]][src[1]] = 0
+    Q = deque([src])
 
     while Q:
-        cr, cc, chop = Q.popleft()
+        cr, cc = Q.popleft()
+        if [cr, cc] == dest:
+            print(visited[cr][cc])
+            break
         for dr, dc in d:
-            nr, nc, nhop = cr + dr, cc + dc, chop + 1
+            nr, nc = cr + dr, cc + dc
             if not (0 <= nr < L and 0 <= nc < L):
                 continue
-            if [nr, nc] == dest:
-                print(nhop)
-                Q = []
-                break
-            if not visited[nr][nc]:
-                Q.append((nr, nc, nhop))
-                visited[nr][nc] = True
+            if visited[nr][nc] == -1:
+                Q.append([nr, nc])
+                visited[nr][nc] = visited[cr][cc] + 1
