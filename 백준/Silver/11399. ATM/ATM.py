@@ -1,15 +1,10 @@
-from heapq import heappop, heappush
 import sys
+
 input = sys.stdin.readline
-
 N = int(input())
-
-people, wait = [], 0
-for idx, time in enumerate(input().rstrip().split()):
-    heappush(people, (int(time), idx))
-
-while people:
-    wait += heappop(people)[0] * N
-    N -= 1
+people, wait = list(map(int, input().rstrip().split())), 0
+people.sort()
+for idx in range(N):
+    wait += people[idx] * (N - idx)
 
 print(wait)
