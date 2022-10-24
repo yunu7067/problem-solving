@@ -1,36 +1,23 @@
 import sys
 sys.setrecursionlimit(10**5)
-
 input = sys.stdin.readline
 
 N = int(input())
 inorder = list(map(int, input().split()))
 postorder = list(map(int, input().split()))
-preorder = []
+index_inorder = [0] * (N + 1)
+for i, v in enumerate(inorder):
+    index_inorder[v] = i
 
 def re_tree(in_pos, post_pos):
-    _root = postorder[post_pos[1] - 1]
-    preorder.append(_root)
-    _root_idx = inorder.index(_root)
+    if (in_pos[0] > in_pos[1]) or (post_pos[0] > post_pos[1]): return
+    root = postorder[post_pos[1]]
+    print(root, end=" ")
+    left_len = index_inorder[root] - in_pos[0]
+    right_len = in_pos[1] - index_inorder[root]
+    # left node
+    re_tree((in_pos[0], in_pos[0] + left_len - 1), (post_pos[0], post_pos[0] + left_len - 1))
+    # right node
+    re_tree((in_pos[1] - right_len + 1, in_pos[1]), (post_pos[1] - right_len, post_pos[1] - 1))
 
-    next_l_len = _root_idx - in_pos[0]
-    next_l_in_pos = (in_pos[0], in_pos[0] + next_l_len)
-    next_l_post_pos = (post_pos[0], post_pos[0] + next_l_len)
-
-    next_r_in_pos = (_root_idx + 1, in_pos[1])
-    next_r_post_pos = (post_pos[0] + next_l_len, post_pos[1] - 1)
-    next_r_len = next_r_post_pos[1] - next_r_post_pos[0]
-
-    if next_l_len == 1:
-        preorder.append(postorder[next_l_post_pos[1] - 1])
-    elif next_l_len != 0:
-        re_tree(next_l_in_pos, next_l_post_pos)
-
-    if next_r_len == 1:
-        preorder.append(postorder[next_r_post_pos[1] - 1])
-    elif next_r_len != 0:
-        re_tree(next_r_in_pos, next_r_post_pos)
-
-
-re_tree((0, len(inorder)), (0, len(inorder)))
-print(*preorder)
+re_tree((0, N - 1), (0, N - 1))
