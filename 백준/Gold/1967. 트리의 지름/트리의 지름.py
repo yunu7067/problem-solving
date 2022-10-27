@@ -1,24 +1,30 @@
-from collections import defaultdict
 import sys
-from typing import List
-sys.setrecursionlimit(10**5)
 
 input = sys.stdin.readline
-vertex = defaultdict(list)
 N = int(input())
+edge = [[] for _ in range(N + 1)]
+diameter = [[0, 0] for _ in range(N + 1)]
 for _ in range(N - 1):
     _node, _leaf, _weight = map(int, input().split())
-    vertex[_node].append((_leaf, _weight))
+    edge[_node].append(_leaf)
+    diameter[_leaf][1] = _weight
 
-def get_diameter(node: int):
-    orphan_diamenter, contain_diamenter = 0, 0
-    if vertex[node]:
-        leafs: List[List[int]] = [get_diameter(leaf[0]) for leaf in vertex[node]]
-        leaf_weights = [leaf[1] + vertex[node][idx][1] for idx, leaf in enumerate(leafs)]
+def calc_diameter():
+    S, visited = [1], [False for _ in range(N + 1)]
+
+    while S:
+        cur_node = S[-1]
+        if not visited[cur_node] and edge[cur_node]:
+            visited[cur_node] = True
+            S.extend(edge[cur_node])
+            continue
+        S.pop()
+        visited[cur_node] = True
+        leafs = [diameter[leaf] for leaf in edge[cur_node]]
+        leaf_weights = [leaf[1] for leaf in leafs]
         leaf_weights.sort(reverse=True)
-        contain_diamenter = leaf_weights[0]
-        orphan_diamenter = max(*list(map(lambda x: x[0], leafs)), sum(leaf_weights[:2]))
+        diameter[cur_node][0] = max([sum(leaf_weights[:2]), *list(map(lambda x: x[0], leafs))])
+        diameter[cur_node][1] += leaf_weights[0] if leaf_weights else 0
 
-    return [orphan_diamenter, contain_diamenter]
-
-print(max(get_diameter(1)))
+calc_diameter()
+print(max(diameter[1]))
