@@ -1,10 +1,7 @@
 import sys
-
 input = sys.stdin.readline
-
 n, k = map(int, input().split())
-coins = []
-dp = [0 for _ in range(2 * k + 1)]
+coins, dp = [], [0] * (k + 1)
 for _ in range(n):
     _coin = int(input())
     if _coin <= 10_000:
