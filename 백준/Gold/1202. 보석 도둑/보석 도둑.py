@@ -5,7 +5,8 @@ input = sys.stdin.readline
 N, K = map(int, input().split())
 gems, bags = [], []
 for _ in range(N):
-    heappush(gems, list(map(int, input().split())))
+    _m, _v = map(int, input().split())
+    heappush(gems, (_m, _v))
 for _ in range(K):
     bags.append(int(input()))
 bags.sort()
